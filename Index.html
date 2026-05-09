@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Workout"/>
+<meta name="theme-color" content="#0c0f14"/>
+<title>Workout Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:#0c0f14;color:#e8eaf0;font-family:'DM Mono',monospace,sans-serif;min-height:100vh;overscroll-behavior:none}
+::-webkit-scrollbar{width:4px;background:#181c24}
+::-webkit-scrollbar-thumb{background:#2a3040;border-radius:2px}
+input[type=number],input[type=date],input[type=text],select{
+  background:#181c24;border:1px solid #2a3040;color:#e8eaf0;
+  padding:8px 10px;border-radius:6px;font-family:inherit;font-size:14px;width:100%;
+  outline:none;transition:border .2s;-webkit-appearance:none;appearance:none;
+}
+input:focus,select:focus{border-color:#a8ff78}
+button{cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a5568' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+.hidden{display:none!important}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.fadein{animation:fadein .25s ease}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div id="header" style="border-bottom:1px solid #1e2530;padding:env(safe-area-inset-top,14px) 20px 0;background:#0c0f14;position:sticky;top:0;z-index:10;padding-top:max(env(safe-area-inset-top),14px)">
+  <div style="max-width:700px;margin:0 auto">
+    <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px">
+      <span style="font-family:Syne;font-size:22px;font-weight:800;color:#a8ff78;letter-spacing:-1px">WORKOUT</span>
+      <span style="font-family:Syne;font-size:22px;font-weight:700;color:#4a5568;letter-spacing:-1px">TRACKER</span>
+    </div>
+    <div style="display:flex">
+      <button onclick="showTab('log')" id="tab-log" class="tabBtn active" style="flex:1;padding:10px 0;background:none;border:none;border-bottom:2px solid #a8ff78;color:#a8ff78;font-size:13px;font-weight:500">📝 บันทึก</button>
+      <button onclick="showTab('history')" id="tab-history" class="tabBtn" style="flex:1;padding:10px 0;background:none;border:none;border-bottom:2px solid transparent;color:#4a5568;font-size:13px;font-weight:500">📅 ประวัติ</button>
+      <button onclick="showTab('chart')" id="tab-chart" class="tabBtn" style="flex:1;padding:10px 0;background:none;border:none;border-bottom:2px solid transparent;color:#4a5568;font-size:13px;font-weight:500">📊 กราฟ</button>
+    </div>
+  </div>
+</div>
+
+<div style="max-width:700px;margin:0 auto;padding:20px 16px 80px">
+
+<!-- ═══════════════════════════════ LOG TAB ═══════════════════════════════ -->
+<div id="page-log" class="fadein">
+
+  <!-- Date + Type -->
+  <div class="card" style="margin-bottom:16px">
+    <div style="display:flex;gap:10px">
+      <div style="flex:1"><div class="lbl">📅 วันที่</div><input type="date" id="inp-date"/></div>
+      <div style="flex:1"><div class="lbl">💪 ประเภท</div>
+        <select id="inp-type" onchange="renderExercises()">
+          <option value="upper">Upper Body</option>
+          <option value="lower">Lower Body</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cardio -->
+  <div class="card" style="border:1px solid #38bdf820;box-shadow:0 0 0 1px #38bdf815;margin-bottom:16px">
+    <div class="sec-head" style="color:#38bdf8">🚶 Cardio — Incline Walking</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <div style="flex:1;min-width:80px"><div class="lbl">เวลา (นาที)</div><input type="number" id="c-mins" placeholder="30" inputmode="decimal"/></div>
+      <div style="flex:1;min-width:80px"><div class="lbl">ระยะทาง (km)</div><input type="number" id="c-dist" placeholder="2.5" inputmode="decimal"/></div>
+      <div style="flex:1;min-width:80px"><div class="lbl">ความชัน (%)</div><input type="number" id="c-inc" placeholder="8" inputmode="decimal"/></div>
+      <div style="flex:1;min-width:80px"><div class="lbl">ความเร็ว (km/h)</div><input type="number" id="c-spd" placeholder="4.5" inputmode="decimal"/></div>
+    </div>
+  </div>
+
+  <!-- Weight Training -->
+  <div class="card" style="border:1px solid #a8ff7820;box-shadow:0 0 0 1px #a8ff7815;margin-bottom:16px">
+    <div class="sec-head" id="wt-head" style="color:#a8ff78">🏋️ Upper Body</div>
+    <div id="ex-list"></div>
+  </div>
+
+  <!-- Core -->
+  <div class="card" style="border:1px solid #f472b620;box-shadow:0 0 0 1px #f472b615;margin-bottom:16px">
+    <div class="sec-head" style="color:#f472b6">🎯 Core</div>
+    <div id="core-list"></div>
+  </div>
+
+  <!-- Save -->
+  <button id="btn-save" onclick="saveSession()" style="width:100%;padding:14px;border-radius:10px;border:none;background:#a8ff78;color:#0c0f14;font-family:Syne;font-weight:800;font-size:16px;letter-spacing:1px;box-shadow:0 0 20px #a8ff7840;transition:all .3s">
+    บันทึกการออกกำลังกาย
+  </button>
+</div>
+
+<!-- ═══════════════════════════════ HISTORY TAB ═══════════════════════════════ -->
+<div id="page-history" class="hidden fadein">
+  <!-- Export/Import -->
+  <div style="display:flex;gap:8px;margin-bottom:16px">
+    <button onclick="exportData()" style="flex:1;padding:10px;border-radius:8px;background:#181c24;border:1px solid #2a3040;color:#8090a8;font-size:12px">⬆️ Export JSON</button>
+    <label style="flex:1;padding:10px;border-radius:8px;background:#181c24;border:1px solid #2a3040;color:#8090a8;font-size:12px;text-align:center;cursor:pointer">
+      ⬇️ Import JSON<input type="file" accept=".json" onchange="importData(event)" style="display:none"/>
+    </label>
+  </div>
+  <div id="history-list"></div>
+</div>
+
+<!-- ═══════════════════════════════ CHART TAB ═══════════════════════════════ -->
+<div id="page-chart" class="hidden fadein">
+  <!-- Weight chart -->
+  <div class="card" style="border:1px solid #a8ff7820;box-shadow:0 0 0 1px #a8ff7815;margin-bottom:20px">
+    <div class="sec-head" style="color:#a8ff78">📊 น้ำหนักเฉลี่ยต่อเดือน</div>
+    <div style="margin-bottom:12px">
+      <select id="ex-select" onchange="renderChart()"></select>
+    </div>
+    <div id="weight-chart" style="display:flex;align-items:flex-end;gap:8px;height:160px;padding-top:10px"></div>
+  </div>
+  <!-- Cardio chart -->
+  <div class="card" style="border:1px solid #38bdf820;box-shadow:0 0 0 1px #38bdf815;margin-bottom:20px">
+    <div class="sec-head" style="color:#38bdf8">🚶 Cardio เฉลี่ย (นาที/เดือน)</div>
+    <div id="cardio-chart" style="display:flex;align-items:flex-end;gap:8px;height:160px;padding-top:10px"></div>
+  </div>
+  <!-- Stats -->
+  <div class="card" style="margin-bottom:20px">
+    <div class="sec-head" style="color:#f472b6">📈 สรุปภาพรวม</div>
+    <div id="stats-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px"></div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<style>
+.card{background:#12161e;border-radius:12px;padding:16px;border:1px solid #1e253020}
+.sec-head{font-family:Syne;font-weight:700;font-size:13px;letter-spacing:1px;margin-bottom:14px}
+.lbl{font-size:11px;color:#4a5568;margin-bottom:5px}
+.ex-block{background:#181c24;border-radius:8px;padding:12px 14px;margin-bottom:10px}
+.ex-block:last-child{margin-bottom:0}
+.set-row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.set-num{font-size:11px;color:#4a5568;min-width:26px}
+.rm-btn{background:none;border:none;color:#4a5568;font-size:14px;padding:0 4px}
+.add-set-btn{border-radius:5px;padding:3px 10px;font-size:12px;border:none}
+.tabBtn.active{border-bottom:2px solid #a8ff78!important;color:#a8ff78!important}
+</style>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const UPPER = ["Lat pull down","Seated row","Chest press","Flat bench press 45°","Lateral side raise 30-45°","Shoulder press","Biceps curl","Triceps curl"];
+const LOWER = ["Leg extension","Goblet squat","Walking lunges","RDL","Leg abduction","Leg adduction","Reverse lunge","Step up","Forward lunge","Kick back","Legs press"];
+const CORE  = ["Plank","Dead bug","Side plank"];
+const MONTHS_TH = ["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+
+// ─── STATE ──────────────────────────────────────────────────────────────────
+let sessions = JSON.parse(localStorage.getItem("wt_sessions")||"[]");
+let exSets = {}; // {name: [{reps,weight}|{secs}]}
+
+function persist(){ localStorage.setItem("wt_sessions", JSON.stringify(sessions)); }
+function today(){ return new Date().toISOString().slice(0,10); }
+function fmt(d){ const [y,m,day]=d.split("-"); return `${day}/${m}/${y}`; }
+function avg(arr){ return arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : 0; }
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+window.onload = function(){
+  document.getElementById("inp-date").value = today();
+  // populate exercise select for chart
+  const sel = document.getElementById("ex-select");
+  [...UPPER,...LOWER].forEach(e=>{ const o=document.createElement("option"); o.value=o.text=e; sel.appendChild(o); });
+  renderExercises();
+  loadSessionIntoForm();
+  showTab("log");
+};
+
+document.getElementById("inp-date").addEventListener("change", loadSessionIntoForm);
+
+// ─── TABS ─────────────────────────────────────────────────────────────────────
+function showTab(t){
+  ["log","history","chart"].forEach(x=>{
+    document.getElementById("page-"+x).classList.toggle("hidden", x!==t);
+    const btn = document.getElementById("tab-"+x);
+    btn.classList.toggle("active", x===t);
+    btn.style.borderBottom = x===t ? "2px solid #a8ff78" : "2px solid transparent";
+    btn.style.color = x===t ? "#a8ff78" : "#4a5568";
+  });
+  if(t==="history") renderHistory();
+  if(t==="chart")   renderChart();
+}
+
+// ─── EXERCISES ───────────────────────────────────────────────────────────────
+function renderExercises(){
+  const type = document.getElementById("inp-type").value;
+  document.getElementById("wt-head").textContent = "🏋️ "+(type==="upper"?"Upper":"Lower")+" Body";
+  const list = type==="upper" ? UPPER : LOWER;
+  renderExList("ex-list", list, false);
+  renderExList("core-list", CORE, true);
+}
+
+function renderExList(containerId, exercises, isCore){
+  const c = document.getElementById(containerId);
+  c.innerHTML = "";
+  exercises.forEach(name=>{
+    const sets = exSets[name]||[];
+    const div = document.createElement("div");
+    div.className = "ex-block";
+    div.id = "block-"+btoa(encodeURIComponent(name));
+    const color = isCore ? "#f472b6" : "#a8ff78";
+    let setsHTML = sets.map((s,i)=> isCore
+      ? `<div class="set-row"><span class="set-num">#${i+1}</span><div style="flex:1"><input type="number" inputmode="decimal" placeholder="วินาที" value="${s.secs||""}" oninput="updateSet('${esc(name)}',${i},'secs',this.value,true)" style="background:#0c0f14;border:1px solid #2a3040;color:#e8eaf0;padding:6px 10px;border-radius:6px;font-family:inherit;font-size:13px;width:100%;outline:none"/></div><button class="rm-btn" onclick="removeSet('${esc(name)}',${i},${isCore})">✕</button></div>`
+      : `<div class="set-row"><span class="set-num">#${i+1}</span><div style="flex:1"><input type="number" inputmode="decimal" placeholder="ครั้ง" value="${s.reps||""}" oninput="updateSet('${esc(name)}',${i},'reps',this.value,false)"/></div><div style="flex:1"><input type="number" inputmode="decimal" placeholder="กก." value="${s.weight||""}" oninput="updateSet('${esc(name)}',${i},'weight',this.value,false)"/></div><button class="rm-btn" onclick="removeSet('${esc(name)}',${i},${isCore})">✕</button></div>`
+    ).join("");
+    if(sets.length===0) setsHTML = `<div style="font-size:11px;color:#3a4050;font-style:italic">กด + เซต เพื่อเริ่มบันทึก</div>`;
+    div.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-size:13px;font-weight:500;color:#c8d0e0">${name}</span>
+        <button class="add-set-btn" onclick="addSet('${esc(name)}',${isCore})" style="background:${color}20;border:1px solid ${color}40;color:${color}">+ เซต</button>
+      </div>
+      <div id="sets-${btoa(encodeURIComponent(name))}">${setsHTML}</div>
+      ${sets.length>0&&!isCore?`<div style="display:flex;gap:50px;font-size:10px;color:#3a4050;margin-top:2px;padding-left:32px"><span>จำนวนครั้ง</span><span>น้ำหนัก (กก.)</span></div>`:""}
+    `;
+    c.appendChild(div);
+  });
+}
+
+function esc(s){ return s.replace(/'/g,"\\'"); }
+
+function addSet(name, isCore){
+  if(!exSets[name]) exSets[name]=[];
+  exSets[name].push(isCore ? {secs:""} : {reps:"",weight:""});
+  renderExercises();
+}
+
+function removeSet(name, idx, isCore){
+  if(exSets[name]) exSets[name].splice(idx,1);
+  renderExercises();
+}
+
+function updateSet(name, idx, field, val, isCore){
+  if(!exSets[name]) exSets[name]=[];
+  while(exSets[name].length<=idx) exSets[name].push(isCore?{secs:""}:{reps:"",weight:""});
+  exSets[name][idx][field] = val;
+}
+
+// ─── LOAD SESSION INTO FORM ──────────────────────────────────────────────────
+function loadSessionIntoForm(){
+  const date = document.getElementById("inp-date").value;
+  const s = sessions.find(x=>x.date===date);
+  exSets = {};
+  if(s){
+    document.getElementById("inp-type").value = s.dayType||"upper";
+    document.getElementById("c-mins").value = s.cardio?.mins||"";
+    document.getElementById("c-dist").value = s.cardio?.dist||"";
+    document.getElementById("c-inc").value  = s.cardio?.incline||"";
+    document.getElementById("c-spd").value  = s.cardio?.speed||"";
+    if(s.exercises) Object.entries(s.exercises).forEach(([k,v])=>{ exSets[k]=v.sets||[]; });
+  } else {
+    document.getElementById("inp-type").value = "upper";
+    ["c-mins","c-dist","c-inc","c-spd"].forEach(id=>document.getElementById(id).value="");
+  }
+  renderExercises();
+}
+
+// ─── SAVE ────────────────────────────────────────────────────────────────────
+function saveSession(){
+  const date = document.getElementById("inp-date").value;
+  const dayType = document.getElementById("inp-type").value;
+  const cardio = {
+    mins: document.getElementById("c-mins").value,
+    dist: document.getElementById("c-dist").value,
+    incline: document.getElementById("c-inc").value,
+    speed: document.getElementById("c-spd").value
+  };
+  const exercises = {};
+  Object.entries(exSets).forEach(([k,v])=>{ if(v.length) exercises[k]={sets:v}; });
+  const session = {date, dayType, cardio, exercises};
+  const idx = sessions.findIndex(x=>x.date===date);
+  if(idx>=0) sessions[idx]=session; else sessions.push(session);
+  sessions.sort((a,b)=>a.date>b.date?-1:1);
+  persist();
+  const btn = document.getElementById("btn-save");
+  btn.textContent = "✓ บันทึกแล้ว";
+  btn.style.background = "#1a2e1a";
+  btn.style.color = "#a8ff78";
+  btn.style.boxShadow = "none";
+  setTimeout(()=>{ btn.textContent="บันทึกการออกกำลังกาย"; btn.style.background="#a8ff78"; btn.style.color="#0c0f14"; btn.style.boxShadow="0 0 20px #a8ff7840"; }, 2000);
+}
+
+// ─── HISTORY ─────────────────────────────────────────────────────────────────
+function renderHistory(){
+  const c = document.getElementById("history-list");
+  if(!sessions.length){ c.innerHTML=`<div style="text-align:center;padding:60px 0;color:#3a4050"><div style="font-size:40px;margin-bottom:12px">🏋️</div>ยังไม่มีประวัติการออกกำลังกาย</div>`; return; }
+  c.innerHTML = sessions.map((s,i)=>`
+    <div style="background:#181c24;border-radius:10px;overflow:hidden;margin-bottom:10px">
+      <div onclick="toggleDetail(${i})" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="font-size:22px">${s.dayType==="upper"?"💪":"🦵"}</span>
+          <div>
+            <div style="font-family:Syne;font-weight:700;font-size:15px;color:#e8eaf0">${fmt(s.date)}</div>
+            <div style="font-size:11px;color:#4a5568;margin-top:2px">${s.dayType==="upper"?"Upper":"Lower"} Body${s.cardio?.mins?` · Cardio ${s.cardio.mins} นาที`:""}</div>
+          </div>
+        </div>
+        <span id="arrow-${i}" style="color:#4a5568;font-size:12px">▼</span>
+      </div>
+      <div id="detail-${i}" class="hidden">${buildDetail(s,i)}</div>
+    </div>
+  `).join("");
+}
+
+function toggleDetail(i){
+  const d = document.getElementById("detail-"+i);
+  const a = document.getElementById("arrow-"+i);
+  const hidden = d.classList.toggle("hidden");
+  a.textContent = hidden ? "▼" : "▲";
+}
+
+function buildDetail(s,i){
+  const ex = s.exercises||{};
+  let html = `<div style="padding:0 16px 16px;border-top:1px solid #1e2530">`;
+  if(s.cardio?.mins){
+    html+=`<div style="margin-top:12px;margin-bottom:8px"><div style="font-size:11px;color:#38bdf8;font-weight:500;margin-bottom:6px">🚶 CARDIO</div><div style="display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:#8090a8">`;
+    if(s.cardio.mins) html+=`<span>⏱ ${s.cardio.mins} นาที</span>`;
+    if(s.cardio.dist) html+=`<span>📏 ${s.cardio.dist} km</span>`;
+    if(s.cardio.incline) html+=`<span>📐 ${s.cardio.incline}%</span>`;
+    if(s.cardio.speed) html+=`<span>⚡ ${s.cardio.speed} km/h</span>`;
+    html+=`</div></div>`;
+  }
+  Object.entries(ex).filter(([,v])=>v?.sets?.length).forEach(([name,data])=>{
+    const isCore = CORE.includes(name);
+    html+=`<div style="margin-top:10px"><div style="font-size:11px;color:${isCore?"#f472b6":"#a8ff78"};font-weight:500;margin-bottom:4px">${name.toUpperCase()}</div><div style="display:flex;flex-wrap:wrap;gap:6px">`;
+    data.sets.forEach((set,j)=>{ html+=`<div style="background:#0c0f14;border-radius:5px;padding:4px 10px;font-size:11px;color:#8090a8">${isCore?`#${j+1} ${set.secs}s`:`#${j+1} ${set.reps}r × ${set.weight}kg`}</div>`; });
+    html+=`</div></div>`;
+  });
+  html+=`<button onclick="deleteSession('${s.date}')" style="margin-top:14px;background:none;border:1px solid #3a2020;color:#7a4040;border-radius:6px;padding:6px 14px;font-size:11px;width:100%">🗑 ลบวันนี้</button>`;
+  html+=`</div>`;
+  return html;
+}
+
+function deleteSession(date){
+  if(!confirm("ลบข้อมูลวันที่ "+fmt(date)+" ?")) return;
+  sessions = sessions.filter(x=>x.date!==date);
+  persist();
+  renderHistory();
+}
+
+// ─── EXPORT / IMPORT ─────────────────────────────────────────────────────────
+function exportData(){
+  const blob = new Blob([JSON.stringify(sessions,null,2)],{type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "workout-backup-"+today()+".json";
+  a.click();
+}
+
+function importData(e){
+  const file = e.target.files[0]; if(!file) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try{
+      const data = JSON.parse(ev.target.result);
+      if(!Array.isArray(data)) throw new Error();
+      if(!confirm(`นำเข้า ${data.length} sessions?\n(จะรวมกับข้อมูลที่มีอยู่)`)) return;
+      data.forEach(s=>{ const idx=sessions.findIndex(x=>x.date===s.date); if(idx>=0) sessions[idx]=s; else sessions.push(s); });
+      sessions.sort((a,b)=>a.date>b.date?-1:1);
+      persist(); renderHistory();
+      alert("นำเข้าสำเร็จ ✅");
+    } catch{ alert("ไฟล์ไม่ถูกต้อง"); }
+  };
+  r.readAsText(file);
+  e.target.value="";
+}
+
+// ─── CHART ───────────────────────────────────────────────────────────────────
+function renderChart(){
+  const selected = document.getElementById("ex-select").value;
+
+  // Weight
+  const wmap={};
+  sessions.forEach(s=>{
+    const [y,m]=s.date.split("-"); const key=`${y}-${m}`;
+    (s.exercises?.[selected]?.sets||[]).forEach(set=>{
+      const w=parseFloat(set.weight); if(!isNaN(w)&&w>0){ if(!wmap[key]) wmap[key]=[]; wmap[key].push(w); }
+    });
+  });
+  const wdata = Object.entries(wmap).sort((a,b)=>a[0]>b[0]?1:-1)
+    .map(([k,v])=>({label:`${MONTHS_TH[parseInt(k.split("-")[1])-1]} ${k.split("-")[0].slice(2)}`, val:avg(v)}));
+  renderBar("weight-chart", wdata, "#a8ff78", "kg");
+
+  // Cardio
+  const cmap={};
+  sessions.forEach(s=>{
+    const [y,m]=s.date.split("-"); const key=`${y}-${m}`;
+    const mins=parseFloat(s.cardio?.mins); if(!isNaN(mins)&&mins>0){ if(!cmap[key]) cmap[key]=[]; cmap[key].push(mins); }
+  });
+  const cdata = Object.entries(cmap).sort((a,b)=>a[0]>b[0]?1:-1)
+    .map(([k,v])=>({label:`${MONTHS_TH[parseInt(k.split("-")[1])-1]} ${k.split("-")[0].slice(2)}`, val:avg(v)}));
+  renderBar("cardio-chart", cdata, "#38bdf8", "นาที");
+
+  // Stats
+  const total = sessions.length;
+  const totalCardio = sessions.reduce((a,s)=>a+(parseFloat(s.cardio?.mins)||0),0).toFixed(0);
+  const upper = sessions.filter(s=>s.dayType==="upper").length;
+  const lower = sessions.filter(s=>s.dayType==="lower").length;
+  document.getElementById("stats-grid").innerHTML = [
+    ["จำนวนครั้งทั้งหมด",total,"ครั้ง"],
+    ["Cardio รวม",totalCardio,"นาที"],
+    ["Upper sessions",upper,"ครั้ง"],
+    ["Lower sessions",lower,"ครั้ง"]
+  ].map(([l,v,u])=>`<div style="background:#181c24;border-radius:8px;padding:12px 14px"><div style="font-size:10px;color:#4a5568;margin-bottom:4px">${l}</div><div style="font-family:Syne;font-weight:800;font-size:22px;color:#e8eaf0">${v} <span style="font-size:13px;color:#4a5568;font-weight:400">${u}</span></div></div>`).join("");
+}
+
+function renderBar(id, data, color, unit){
+  const c = document.getElementById(id);
+  if(!data.length){ c.innerHTML=`<div style="flex:1;text-align:center;padding:30px 0;color:#3a4050;font-size:13px">ยังไม่มีข้อมูล</div>`; return; }
+  const max = Math.max(...data.map(d=>d.val),1);
+  c.innerHTML = data.map(d=>`
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end">
+      <div style="font-size:10px;color:${color};font-weight:500">${d.val.toFixed(1)}</div>
+      <div style="width:100%;border-radius:4px 4px 0 0;height:${(d.val/max)*110}px;background:linear-gradient(180deg,${color},${color}60);min-height:4px;transition:height .5s"></div>
+      <div style="font-size:9px;color:#4a5568;text-align:center;line-height:1.2">${d.label}</div>
+    </div>
+  `).join("");
+}
+</script>
+</body>
+</html>
