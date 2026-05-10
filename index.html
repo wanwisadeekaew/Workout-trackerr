@@ -10,50 +10,52 @@
 <meta name="theme-color" content="#0c0f14"/>
 <title>Workout Tracker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{background:#0c0f14;color:#e8eaf0;font-family:'DM Mono',monospace,sans-serif;min-height:100vh;overscroll-behavior:none}
+body{background:#0c0f14;color:#e8eaf0;font-family:'DM Sans',sans-serif;min-height:100vh;overscroll-behavior:none;font-size:16px}
 ::-webkit-scrollbar{width:4px;background:#181c24}
 ::-webkit-scrollbar-thumb{background:#2a3040;border-radius:2px}
 input[type=number],input[type=date],input[type=text],select{
   background:#181c24;border:1px solid #2a3040;color:#e8eaf0;
-  padding:8px 10px;border-radius:6px;font-family:inherit;font-size:14px;width:100%;
+  padding:10px 12px;border-radius:8px;font-family:inherit;font-size:16px;width:100%;
   outline:none;transition:border .2s;-webkit-appearance:none;appearance:none;
 }
 input:focus,select:focus{border-color:#a8ff78}
 button{cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a5568' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a5568' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
 .hidden{display:none!important}
 @keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .fadein{animation:fadein .25s ease}
-.card{background:#12161e;border-radius:12px;padding:16px;border:1px solid #1e253020}
-.sec-head{font-family:Syne;font-weight:700;font-size:13px;letter-spacing:1px;margin-bottom:14px}
-.lbl{font-size:11px;color:#4a5568;margin-bottom:5px}
-.ex-block{background:#181c24;border-radius:8px;padding:12px 14px;margin-bottom:10px}
+.card{background:#12161e;border-radius:14px;padding:18px;border:1px solid #1e253020}
+.sec-head{font-family:Syne;font-weight:700;font-size:15px;letter-spacing:.5px;margin-bottom:16px}
+.lbl{font-size:13px;color:#4a5568;margin-bottom:6px;font-weight:500}
+.ex-block{background:#181c24;border-radius:10px;padding:14px 16px;margin-bottom:12px}
 .ex-block:last-child{margin-bottom:0}
-.set-row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
-.set-num{font-size:11px;color:#4a5568;min-width:26px}
-.rm-btn{background:none;border:none;color:#4a5568;font-size:14px;padding:0 4px}
-.add-set-btn{border-radius:5px;padding:3px 10px;font-size:12px;border:none}
+.set-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.set-num{font-size:13px;color:#4a5568;min-width:28px;font-weight:600}
+.rm-btn{background:none;border:none;color:#4a5568;font-size:18px;padding:0 6px}
+.add-set-btn{border-radius:6px;padding:5px 14px;font-size:14px;border:none;font-weight:600}
 .tabBtn{transition:all .2s}
+.set-input{background:#0c0f14;border:1px solid #2a3040;color:#e8eaf0;padding:8px 10px;border-radius:8px;font-family:inherit;font-size:15px;width:100%;outline:none}
 </style>
 </head>
 <body>
 
 <!-- HEADER -->
 
-<div style="border-bottom:1px solid #1e2530;padding:env(safe-area-inset-top,14px) 20px 0;background:#0c0f14;position:sticky;top:0;z-index:10;padding-top:max(env(safe-area-inset-top),14px)">
+<div style="border-bottom:1px solid #1e2530;padding:env(safe-area-inset-top,14px) 16px 0;background:#0c0f14;position:sticky;top:0;z-index:10;padding-top:max(env(safe-area-inset-top),14px)">
   <div style="max-width:700px;margin:0 auto">
     <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px">
-      <span style="font-family:Syne;font-size:22px;font-weight:800;color:#a8ff78;letter-spacing:-1px">WORKOUT</span>
-      <span style="font-family:Syne;font-size:22px;font-weight:700;color:#4a5568;letter-spacing:-1px">TRACKER</span>
+      <span style="font-family:Syne;font-size:24px;font-weight:800;color:#a8ff78;letter-spacing:-1px">WORKOUT</span>
+      <span style="font-family:Syne;font-size:24px;font-weight:700;color:#4a5568;letter-spacing:-1px">TRACKER</span>
     </div>
     <div style="display:flex">
-      <button onclick="showTab('log')" id="tab-log" class="tabBtn" style="flex:1;padding:10px 0;background:none;border:none;border-bottom:2px solid #a8ff78;color:#a8ff78;font-size:13px;font-weight:500">📝 บันทึก</button>
-      <button onclick="showTab('history')" id="tab-history" class="tabBtn" style="flex:1;padding:10px 0;background:none;border:none;border-bottom:2px solid transparent;color:#4a5568;font-size:13px;font-weight:500">📅 ประวัติ</button>
-      <button onclick="showTab('chart')" id="tab-chart" class="tabBtn" style="flex:1;padding:10px 0;background:none;border:none;border-bottom:2px solid transparent;color:#4a5568;font-size:13px;font-weight:500">📊 กราฟ</button>
-      <button onclick="showTab('manage')" id="tab-manage" class="tabBtn" style="flex:1;padding:10px 0;background:none;border:none;border-bottom:2px solid transparent;color:#4a5568;font-size:13px;font-weight:500">⚙️ ท่า</button>
+      <button onclick="showTab('log')"     id="tab-log"     class="tabBtn" style="flex:1;padding:10px 0;background:none;border:none;border-bottom:2px solid #a8ff78;color:#a8ff78;font-size:13px;font-weight:600">📝 บันทึก</button>
+      <button onclick="showTab('bw')"      id="tab-bw"      class="tabBtn" style="flex:1;padding:10px 0;background:none;border:none;border-bottom:2px solid transparent;color:#4a5568;font-size:13px;font-weight:600">⚖️ น้ำหนัก</button>
+      <button onclick="showTab('history')" id="tab-history" class="tabBtn" style="flex:1;padding:10px 0;background:none;border:none;border-bottom:2px solid transparent;color:#4a5568;font-size:13px;font-weight:600">📅 ประวัติ</button>
+      <button onclick="showTab('chart')"   id="tab-chart"   class="tabBtn" style="flex:1;padding:10px 0;background:none;border:none;border-bottom:2px solid transparent;color:#4a5568;font-size:13px;font-weight:600">📊 กราฟ</button>
+      <button onclick="showTab('manage')"  id="tab-manage"  class="tabBtn" style="flex:1;padding:10px 0;background:none;border:none;border-bottom:2px solid transparent;color:#4a5568;font-size:13px;font-weight:600">⚙️ ท่า</button>
     </div>
   </div>
 </div>
@@ -63,6 +65,22 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 <!-- ═══════════ LOG TAB ═══════════ -->
 
 <div id="page-log" class="fadein">
+
+  <!-- Body weight quick -->
+
+  <div class="card" style="margin-bottom:16px;border:1px solid #e879f920;box-shadow:0 0 0 1px #e879f910">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div class="sec-head" style="color:#e879f9;margin-bottom:0">⚖️ น้ำหนักวันนี้</div>
+      <span id="bw-today-label" style="font-family:Syne;font-size:20px;font-weight:800;color:#e879f9"></span>
+    </div>
+    <div style="display:flex;gap:8px">
+      <input type="number" id="bw-inp" placeholder="กก. เช่น 58.5" inputmode="decimal" step="0.1" style="flex:1"/>
+      <button onclick="saveBW()" style="padding:10px 18px;border-radius:8px;border:none;background:#e879f920;border:1px solid #e879f940;color:#e879f9;font-size:15px;font-weight:600;white-space:nowrap">บันทึก</button>
+    </div>
+  </div>
+
+  <!-- Date + Type -->
+
   <div class="card" style="margin-bottom:16px">
     <div style="display:flex;gap:10px">
       <div style="flex:1"><div class="lbl">📅 วันที่</div><input type="date" id="inp-date"/></div>
@@ -75,7 +93,9 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     </div>
   </div>
 
-  <div class="card" style="border:1px solid #38bdf820;box-shadow:0 0 0 1px #38bdf815;margin-bottom:16px">
+  <!-- Cardio -->
+
+  <div class="card" style="border:1px solid #38bdf820;box-shadow:0 0 0 1px #38bdf810;margin-bottom:16px">
     <div class="sec-head" style="color:#38bdf8">🚶 Cardio — Incline Walking</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <div style="flex:1;min-width:80px"><div class="lbl">เวลา (นาที)</div><input type="number" id="c-mins" placeholder="30" inputmode="decimal"/></div>
@@ -85,27 +105,64 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     </div>
   </div>
 
-  <div class="card" style="border:1px solid #a8ff7820;box-shadow:0 0 0 1px #a8ff7815;margin-bottom:16px">
+  <!-- Weight Training -->
+
+  <div class="card" style="border:1px solid #a8ff7820;box-shadow:0 0 0 1px #a8ff7810;margin-bottom:16px">
     <div class="sec-head" id="wt-head" style="color:#a8ff78">🏋️ Upper Body</div>
     <div id="ex-list"></div>
   </div>
 
-  <div class="card" style="border:1px solid #f472b620;box-shadow:0 0 0 1px #f472b615;margin-bottom:16px">
+  <!-- Core -->
+
+  <div class="card" style="border:1px solid #f472b620;box-shadow:0 0 0 1px #f472b610;margin-bottom:16px">
     <div class="sec-head" style="color:#f472b6">🎯 Core</div>
     <div id="core-list"></div>
   </div>
 
-  <button id="btn-save" onclick="saveSession()" style="width:100%;padding:14px;border-radius:10px;border:none;background:#a8ff78;color:#0c0f14;font-family:Syne;font-weight:800;font-size:16px;letter-spacing:1px;box-shadow:0 0 20px #a8ff7840;transition:all .3s">
+  <button id="btn-save" onclick="saveSession()" style="width:100%;padding:16px;border-radius:12px;border:none;background:#a8ff78;color:#0c0f14;font-family:Syne;font-weight:800;font-size:18px;letter-spacing:1px;box-shadow:0 0 20px #a8ff7840;transition:all .3s">
     บันทึกการออกกำลังกาย
   </button>
+</div>
+
+<!-- ═══════════ BODY WEIGHT TAB ═══════════ -->
+
+<div id="page-bw" class="hidden fadein">
+
+  <!-- Add entry -->
+
+  <div class="card" style="margin-bottom:16px;border:1px solid #e879f920;box-shadow:0 0 0 1px #e879f910">
+    <div class="sec-head" style="color:#e879f9">⚖️ บันทึกน้ำหนักตัว</div>
+    <div style="display:flex;gap:10px;margin-bottom:10px">
+      <div style="flex:1"><div class="lbl">วันที่</div><input type="date" id="bw-date"/></div>
+      <div style="flex:1"><div class="lbl">น้ำหนัก (กก.)</div><input type="number" id="bw-inp2" placeholder="58.5" inputmode="decimal" step="0.1"/></div>
+    </div>
+    <button onclick="saveBWManual()" style="width:100%;padding:12px;border-radius:8px;border:none;background:#e879f9;color:#0c0f14;font-family:Syne;font-weight:800;font-size:16px;transition:all .3s">
+      บันทึก
+    </button>
+  </div>
+
+  <!-- Graph -->
+
+  <div class="card" style="margin-bottom:16px;border:1px solid #e879f920">
+    <div class="sec-head" style="color:#e879f9">📈 กราฟน้ำหนักตัว</div>
+    <div id="bw-chart" style="display:flex;align-items:flex-end;gap:6px;height:160px;padding-top:10px"></div>
+  </div>
+
+  <!-- History list -->
+
+  <div class="card" style="border:1px solid #e879f920">
+    <div class="sec-head" style="color:#e879f9">📋 ประวัติน้ำหนัก</div>
+    <div id="bw-list"></div>
+  </div>
 </div>
 
 <!-- ═══════════ HISTORY TAB ═══════════ -->
 
 <div id="page-history" class="hidden fadein">
-  <div style="display:flex;gap:8px;margin-bottom:16px">
-    <button onclick="exportData()" style="flex:1;padding:10px;border-radius:8px;background:#181c24;border:1px solid #2a3040;color:#8090a8;font-size:12px">⬆️ Export JSON</button>
-    <label style="flex:1;padding:10px;border-radius:8px;background:#181c24;border:1px solid #2a3040;color:#8090a8;font-size:12px;text-align:center;cursor:pointer">
+  <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+    <button onclick="exportJSON()" style="flex:1;min-width:100px;padding:12px;border-radius:8px;background:#181c24;border:1px solid #2a3040;color:#8090a8;font-size:14px;font-weight:500">⬆️ Export JSON</button>
+    <button onclick="exportCSV()" style="flex:1;min-width:100px;padding:12px;border-radius:8px;background:#181c24;border:1px solid #2a3040;color:#8090a8;font-size:14px;font-weight:500">📊 Export CSV</button>
+    <label style="flex:1;min-width:100px;padding:12px;border-radius:8px;background:#181c24;border:1px solid #2a3040;color:#8090a8;font-size:14px;font-weight:500;text-align:center;cursor:pointer">
       ⬇️ Import JSON<input type="file" accept=".json" onchange="importData(event)" style="display:none"/>
     </label>
   </div>
@@ -115,14 +172,18 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 <!-- ═══════════ CHART TAB ═══════════ -->
 
 <div id="page-chart" class="hidden fadein">
-  <div class="card" style="border:1px solid #a8ff7820;box-shadow:0 0 0 1px #a8ff7815;margin-bottom:20px">
-    <div class="sec-head" style="color:#a8ff78">📊 น้ำหนักเฉลี่ยต่อเดือน</div>
+  <div class="card" style="border:1px solid #a8ff7820;box-shadow:0 0 0 1px #a8ff7810;margin-bottom:20px">
+    <div class="sec-head" style="color:#a8ff78">📊 น้ำหนักเฉลี่ยต่อเดือน (ท่า)</div>
     <div style="margin-bottom:12px"><select id="ex-select" onchange="renderChart()"></select></div>
-    <div id="weight-chart" style="display:flex;align-items:flex-end;gap:8px;height:160px;padding-top:10px"></div>
+    <div id="weight-chart" style="display:flex;align-items:flex-end;gap:6px;height:160px;padding-top:10px"></div>
   </div>
-  <div class="card" style="border:1px solid #38bdf820;box-shadow:0 0 0 1px #38bdf815;margin-bottom:20px">
+  <div class="card" style="border:1px solid #e879f920;margin-bottom:20px">
+    <div class="sec-head" style="color:#e879f9">⚖️ น้ำหนักตัวรายเดือน (เฉลี่ย)</div>
+    <div id="bw-month-chart" style="display:flex;align-items:flex-end;gap:6px;height:160px;padding-top:10px"></div>
+  </div>
+  <div class="card" style="border:1px solid #38bdf820;box-shadow:0 0 0 1px #38bdf810;margin-bottom:20px">
     <div class="sec-head" style="color:#38bdf8">🚶 Cardio เฉลี่ย (นาที/เดือน)</div>
-    <div id="cardio-chart" style="display:flex;align-items:flex-end;gap:8px;height:160px;padding-top:10px"></div>
+    <div id="cardio-chart" style="display:flex;align-items:flex-end;gap:6px;height:160px;padding-top:10px"></div>
   </div>
   <div class="card" style="margin-bottom:20px">
     <div class="sec-head" style="color:#f472b6">📈 สรุปภาพรวม</div>
@@ -133,77 +194,62 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 <!-- ═══════════ MANAGE TAB ═══════════ -->
 
 <div id="page-manage" class="hidden fadein">
-
-  <!-- Add form -->
-
-  <div class="card" style="margin-bottom:16px;border:1px solid #a8ff7820;box-shadow:0 0 0 1px #a8ff7815">
+  <div class="card" style="margin-bottom:16px;border:1px solid #a8ff7820;box-shadow:0 0 0 1px #a8ff7810">
     <div class="sec-head" style="color:#a8ff78">➕ เพิ่มท่าใหม่</div>
-    <div style="margin-bottom:10px">
-      <div class="lbl">ชื่อท่า</div>
-      <input type="text" id="new-ex-name" placeholder="เช่น Pull up, Dumbbell row…"/>
-    </div>
-    <div style="margin-bottom:14px">
-      <div class="lbl">ประเภท</div>
+    <div style="margin-bottom:12px"><div class="lbl">ชื่อท่า</div><input type="text" id="new-ex-name" placeholder="เช่น Pull up, Dumbbell row…"/></div>
+    <div style="margin-bottom:16px"><div class="lbl">ประเภท</div>
       <select id="new-ex-type">
         <option value="upper">💪 Upper Body</option>
         <option value="lower">🦵 Lower Body</option>
         <option value="core">🎯 Core</option>
       </select>
     </div>
-    <button id="btn-add-ex" onclick="addExercise()" style="width:100%;padding:12px;border-radius:8px;border:none;background:#a8ff78;color:#0c0f14;font-family:Syne;font-weight:800;font-size:14px;transition:all .3s">
-      เพิ่มท่า
-    </button>
+    <button id="btn-add-ex" onclick="addExercise()" style="width:100%;padding:14px;border-radius:8px;border:none;background:#a8ff78;color:#0c0f14;font-family:Syne;font-weight:800;font-size:16px;transition:all .3s">เพิ่มท่า</button>
   </div>
-
-  <!-- Upper list -->
-
   <div class="card" style="margin-bottom:12px;border:1px solid #a8ff7820">
     <div class="sec-head" style="color:#a8ff78">💪 Upper Body</div>
     <div id="manage-upper"></div>
   </div>
-
-  <!-- Lower list -->
-
   <div class="card" style="margin-bottom:12px;border:1px solid #fbbf2420">
     <div class="sec-head" style="color:#fbbf24">🦵 Lower Body</div>
     <div id="manage-lower"></div>
   </div>
-
-  <!-- Core list -->
-
   <div class="card" style="margin-bottom:12px;border:1px solid #f472b620">
     <div class="sec-head" style="color:#f472b6">🎯 Core</div>
     <div id="manage-core"></div>
   </div>
-
 </div>
 
 </div><!-- /main -->
 
 <script>
-// ─── DEFAULTS ───────────────────────────────────────────────────────────────
+// ─── DEFAULTS ────────────────────────────────────────────────────────────────
 const DEFAULT_UPPER = ["Lat pull down","Seated row","Chest press","Flat bench press 45°","Lateral side raise 30-45°","Shoulder press","Biceps curl","Triceps curl"];
 const DEFAULT_LOWER = ["Leg extension","Goblet squat","Walking lunges","RDL","Leg abduction","Leg adduction","Reverse lunge","Step up","Forward lunge","Kick back","Legs press"];
 const DEFAULT_CORE  = ["Plank","Dead bug","Side plank"];
 const MONTHS_TH = ["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
 
-// ─── STATE ──────────────────────────────────────────────────────────────────
-let sessions = JSON.parse(localStorage.getItem("wt_sessions")||"[]");
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let sessions   = JSON.parse(localStorage.getItem("wt_sessions")||"[]");
+let bodyWeight = JSON.parse(localStorage.getItem("wt_bw")||"[]"); // [{date,kg}]
 let EX = JSON.parse(localStorage.getItem("wt_exercises")||"null") || {
   upper:[...DEFAULT_UPPER], lower:[...DEFAULT_LOWER], core:[...DEFAULT_CORE]
 };
 let exSets = {};
 
-function persist(){ localStorage.setItem("wt_sessions",JSON.stringify(sessions)); }
-function persistEx(){ localStorage.setItem("wt_exercises",JSON.stringify(EX)); }
-function today(){ return new Date().toISOString().slice(0,10); }
-function fmt(d){ const [y,m,day]=d.split("-"); return `${day}/${m}/${y}`; }
-function avg(arr){ return arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:0; }
-function esc(s){ return s.replace(/\\/g,"\\\\").replace(/'/g,"\\'"); }
+function persist()   { localStorage.setItem("wt_sessions",JSON.stringify(sessions)); }
+function persistBW() { localStorage.setItem("wt_bw",JSON.stringify(bodyWeight)); }
+function persistEx() { localStorage.setItem("wt_exercises",JSON.stringify(EX)); }
+function today()     { return new Date().toISOString().slice(0,10); }
+function fmt(d)      { const [y,m,day]=d.split("-"); return `${day}/${m}/${y}`; }
+function avg(arr)    { return arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:0; }
+function esc(s)      { return s.replace(/\\/g,"\\\\").replace(/'/g,"\\'"); }
 
-// ─── INIT ────────────────────────────────────────────────────────────────────
+// ─── INIT ─────────────────────────────────────────────────────────────────────
 window.onload = function(){
   document.getElementById("inp-date").value = today();
+  document.getElementById("bw-date").value  = today();
+  loadBWToday();
   renderExercises();
   loadSessionIntoForm();
   refreshChartSelect();
@@ -213,18 +259,90 @@ document.getElementById("inp-date").addEventListener("change", loadSessionIntoFo
 
 // ─── TABS ─────────────────────────────────────────────────────────────────────
 function showTab(t){
-  ["log","history","chart","manage"].forEach(x=>{
+  ["log","bw","history","chart","manage"].forEach(x=>{
     document.getElementById("page-"+x).classList.toggle("hidden",x!==t);
     const btn=document.getElementById("tab-"+x);
     btn.style.borderBottom = x===t?"2px solid #a8ff78":"2px solid transparent";
     btn.style.color = x===t?"#a8ff78":"#4a5568";
   });
-  if(t==="history") renderHistory();
-  if(t==="chart"){ refreshChartSelect(); renderChart(); }
-  if(t==="manage") renderManage();
+  if(t==="bw")      { renderBWTab(); }
+  if(t==="history") { renderHistory(); }
+  if(t==="chart")   { refreshChartSelect(); renderChart(); }
+  if(t==="manage")  { renderManage(); }
 }
 
-// ─── LOG ──────────────────────────────────────────────────────────────────────
+// ─── BODY WEIGHT ─────────────────────────────────────────────────────────────
+function loadBWToday(){
+  const rec = bodyWeight.find(x=>x.date===today());
+  const el = document.getElementById("bw-today-label");
+  if(rec){ el.textContent=rec.kg+" kg"; document.getElementById("bw-inp").value=rec.kg; }
+  else   { el.textContent="—"; }
+}
+
+function saveBW(){
+  const kg = parseFloat(document.getElementById("bw-inp").value);
+  if(isNaN(kg)||kg<=0){alert("กรุณาใส่น้ำหนักให้ถูกต้อง");return;}
+  saveBWEntry(today(), kg);
+  document.getElementById("bw-today-label").textContent=kg+" kg";
+}
+
+function saveBWManual(){
+  const date = document.getElementById("bw-date").value;
+  const kg   = parseFloat(document.getElementById("bw-inp2").value);
+  if(!date||isNaN(kg)||kg<=0){alert("กรุณาใส่วันที่และน้ำหนักให้ครบ");return;}
+  saveBWEntry(date, kg);
+  document.getElementById("bw-inp2").value="";
+  renderBWTab();
+  if(date===today()) loadBWToday();
+}
+
+function saveBWEntry(date, kg){
+  const idx=bodyWeight.findIndex(x=>x.date===date);
+  if(idx>=0) bodyWeight[idx].kg=kg; else bodyWeight.push({date,kg});
+  bodyWeight.sort((a,b)=>a.date>b.date?-1:1);
+  persistBW();
+}
+
+function deleteBW(date){
+  if(!confirm("ลบข้อมูลน้ำหนักวันที่ "+fmt(date)+"?")) return;
+  bodyWeight=bodyWeight.filter(x=>x.date!==date);
+  persistBW(); renderBWTab();
+  if(date===today()) loadBWToday();
+}
+
+function renderBWTab(){
+  // chart — show last 20 entries (oldest→newest)
+  const data=[...bodyWeight].reverse().slice(-20);
+  const bc=document.getElementById("bw-chart");
+  if(!data.length){ bc.innerHTML=`<div style="flex:1;text-align:center;padding:30px 0;color:#3a4050;font-size:15px">ยังไม่มีข้อมูล</div>`; }
+  else {
+    const min=Math.min(...data.map(d=>d.kg)), max=Math.max(...data.map(d=>d.kg),min+1);
+    bc.innerHTML=data.map(d=>{
+      const h=Math.max(((d.kg-min)/(max-min||1))*110+20,8);
+      return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end">
+        <div style="font-size:10px;color:#e879f9;font-weight:600">${d.kg}</div>
+        <div style="width:100%;border-radius:4px 4px 0 0;height:${h}px;background:linear-gradient(180deg,#e879f9,#e879f960);min-height:6px"></div>
+        <div style="font-size:9px;color:#4a5568;text-align:center;line-height:1.2">${fmt(d.date).slice(0,5)}</div>
+      </div>`;
+    }).join("");
+  }
+  // list
+  const lc=document.getElementById("bw-list");
+  if(!bodyWeight.length){ lc.innerHTML=`<div style="color:#3a4050;font-size:15px;text-align:center;padding:20px 0">ยังไม่มีข้อมูล</div>`; return; }
+  lc.innerHTML=bodyWeight.map(r=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#0c0f14;border-radius:10px;margin-bottom:8px">
+      <div>
+        <div style="font-size:15px;color:#c8d0e0;font-weight:500">${fmt(r.date)}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px">
+        <span style="font-family:Syne;font-size:20px;font-weight:800;color:#e879f9">${r.kg} <span style="font-size:13px;color:#4a5568;font-weight:400">kg</span></span>
+        <button onclick="deleteBW('${r.date}')" style="background:none;border:1px solid #3a2020;color:#7a4040;border-radius:6px;padding:4px 10px;font-size:13px">ลบ</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+// ─── LOG ─────────────────────────────────────────────────────────────────────
 function renderExercises(){
   const type=document.getElementById("inp-type").value;
   document.getElementById("wt-head").textContent="🏋️ "+(type==="upper"?"Upper":"Lower")+" Body";
@@ -239,20 +357,19 @@ function renderExList(cid, list, isCore){
     const color=isCore?"#f472b6":"#a8ff78";
     const div=document.createElement("div");
     div.className="ex-block";
-    const inputStyle='style="background:#0c0f14;border:1px solid #2a3040;color:#e8eaf0;padding:6px 10px;border-radius:6px;font-family:inherit;font-size:13px;width:100%;outline:none"';
-    let setsHTML = sets.length===0
-      ? `<div style="font-size:11px;color:#3a4050;font-style:italic">กด + เซต เพื่อเริ่มบันทึก</div>`
+    let setsHTML=sets.length===0
+      ? `<div style="font-size:14px;color:#3a4050;font-style:italic">กด + เซต เพื่อเริ่มบันทึก</div>`
       : sets.map((s,i)=>isCore
-          ? `<div class="set-row"><span class="set-num">#${i+1}</span><div style="flex:1"><input type="number" inputmode="decimal" placeholder="วินาที" value="${s.secs||""}" oninput="updateSet('${esc(name)}',${i},'secs',this.value,true)" ${inputStyle}/></div><button class="rm-btn" onclick="removeSet('${esc(name)}',${i})">✕</button></div>`
-          : `<div class="set-row"><span class="set-num">#${i+1}</span><div style="flex:1"><input type="number" inputmode="decimal" placeholder="ครั้ง" value="${s.reps||""}" oninput="updateSet('${esc(name)}',${i},'reps',this.value,false)" ${inputStyle}/></div><div style="flex:1"><input type="number" inputmode="decimal" placeholder="กก." value="${s.weight||""}" oninput="updateSet('${esc(name)}',${i},'weight',this.value,false)" ${inputStyle}/></div><button class="rm-btn" onclick="removeSet('${esc(name)}',${i})">✕</button></div>`
+          ? `<div class="set-row"><span class="set-num">#${i+1}</span><div style="flex:1"><input type="number" inputmode="decimal" placeholder="วินาที" value="${s.secs||""}" oninput="updateSet('${esc(name)}',${i},'secs',this.value,true)" class="set-input"/></div><button class="rm-btn" onclick="removeSet('${esc(name)}',${i})">✕</button></div>`
+          : `<div class="set-row"><span class="set-num">#${i+1}</span><div style="flex:1"><input type="number" inputmode="decimal" placeholder="ครั้ง" value="${s.reps||""}" oninput="updateSet('${esc(name)}',${i},'reps',this.value,false)" class="set-input"/></div><div style="flex:1"><input type="number" inputmode="decimal" placeholder="กก." value="${s.weight||""}" oninput="updateSet('${esc(name)}',${i},'weight',this.value,false)" class="set-input"/></div><button class="rm-btn" onclick="removeSet('${esc(name)}',${i})">✕</button></div>`
         ).join("");
     div.innerHTML=`
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <span style="font-size:13px;font-weight:500;color:#c8d0e0">${name}</span>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <span style="font-size:15px;font-weight:600;color:#c8d0e0">${name}</span>
         <button class="add-set-btn" onclick="addSet('${esc(name)}',${isCore})" style="background:${color}20;border:1px solid ${color}40;color:${color}">+ เซต</button>
       </div>
       <div>${setsHTML}</div>
-      ${sets.length>0&&!isCore?`<div style="display:flex;gap:50px;font-size:10px;color:#3a4050;margin-top:2px;padding-left:32px"><span>จำนวนครั้ง</span><span>น้ำหนัก (กก.)</span></div>`:""}
+      ${sets.length>0&&!isCore?`<div style="display:flex;gap:50px;font-size:12px;color:#3a4050;margin-top:4px;padding-left:34px"><span>จำนวนครั้ง</span><span>น้ำหนัก (กก.)</span></div>`:""}
     `;
     c.appendChild(div);
   });
@@ -307,14 +424,13 @@ function saveSession(){
   setTimeout(()=>{btn.textContent="บันทึกการออกกำลังกาย"; btn.style.background="#a8ff78"; btn.style.color="#0c0f14"; btn.style.boxShadow="0 0 20px #a8ff7840";},2000);
 }
 
-// ─── MANAGE ───────────────────────────────────────────────────────────────────
+// ─── MANAGE ──────────────────────────────────────────────────────────────────
 function addExercise(){
   const name=document.getElementById("new-ex-name").value.trim();
   const type=document.getElementById("new-ex-type").value;
   if(!name){alert("กรุณาใส่ชื่อท่า");return;}
-  if(EX[type].includes(name)){alert("มีท่านี้อยู่แล้วใน "+type);return;}
-  EX[type].push(name);
-  persistEx();
+  if(EX[type].includes(name)){alert("มีท่านี้อยู่แล้ว");return;}
+  EX[type].push(name); persistEx();
   document.getElementById("new-ex-name").value="";
   renderManage(); refreshChartSelect(); renderExercises();
   const btn=document.getElementById("btn-add-ex");
@@ -337,14 +453,14 @@ function renderManage(){
 
 function renderManageSection(cid,type,color){
   const c=document.getElementById(cid);
-  if(!EX[type].length){c.innerHTML=`<div style="font-size:12px;color:#3a4050;font-style:italic;padding:4px 0">ยังไม่มีท่า</div>`;return;}
+  if(!EX[type].length){c.innerHTML=`<div style="font-size:14px;color:#3a4050;font-style:italic;padding:4px 0">ยังไม่มีท่า</div>`;return;}
   c.innerHTML=EX[type].map((name,i)=>`
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#0c0f14;border-radius:8px;margin-bottom:8px">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#0c0f14;border-radius:8px;margin-bottom:8px">
       <div style="display:flex;align-items:center;gap:10px">
-        <span style="font-size:10px;color:#3a4050;min-width:18px">${i+1}</span>
-        <span style="font-size:13px;color:#c8d0e0">${name}</span>
+        <span style="font-size:13px;color:#3a4050;min-width:22px;font-weight:600">${i+1}</span>
+        <span style="font-size:15px;color:#c8d0e0;font-weight:500">${name}</span>
       </div>
-      <button onclick="deleteExercise('${type}','${esc(name)}')" style="background:none;border:1px solid #3a2020;color:#7a4040;border-radius:5px;padding:3px 10px;font-size:11px;flex-shrink:0">ลบ</button>
+      <button onclick="deleteExercise('${type}','${esc(name)}')" style="background:none;border:1px solid #3a2020;color:#7a4040;border-radius:6px;padding:5px 12px;font-size:13px;flex-shrink:0">ลบ</button>
     </div>
   `).join("");
 }
@@ -352,18 +468,18 @@ function renderManageSection(cid,type,color){
 // ─── HISTORY ─────────────────────────────────────────────────────────────────
 function renderHistory(){
   const c=document.getElementById("history-list");
-  if(!sessions.length){c.innerHTML=`<div style="text-align:center;padding:60px 0;color:#3a4050"><div style="font-size:40px;margin-bottom:12px">🏋️</div>ยังไม่มีประวัติการออกกำลังกาย</div>`;return;}
+  if(!sessions.length){c.innerHTML=`<div style="text-align:center;padding:60px 0;color:#3a4050"><div style="font-size:48px;margin-bottom:12px">🏋️</div><div style="font-size:16px">ยังไม่มีประวัติการออกกำลังกาย</div></div>`;return;}
   c.innerHTML=sessions.map((s,i)=>`
-    <div style="background:#181c24;border-radius:10px;overflow:hidden;margin-bottom:10px">
-      <div onclick="toggleDetail(${i})" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer">
-        <div style="display:flex;align-items:center;gap:12px">
-          <span style="font-size:22px">${s.dayType==="upper"?"💪":"🦵"}</span>
+    <div style="background:#181c24;border-radius:12px;overflow:hidden;margin-bottom:12px">
+      <div onclick="toggleDetail(${i})" style="display:flex;align-items:center;justify-content:space-between;padding:16px;cursor:pointer">
+        <div style="display:flex;align-items:center;gap:14px">
+          <span style="font-size:26px">${s.dayType==="upper"?"💪":"🦵"}</span>
           <div>
-            <div style="font-family:Syne;font-weight:700;font-size:15px;color:#e8eaf0">${fmt(s.date)}</div>
-            <div style="font-size:11px;color:#4a5568;margin-top:2px">${s.dayType==="upper"?"Upper":"Lower"} Body${s.cardio?.mins?` · Cardio ${s.cardio.mins} นาที`:""}</div>
+            <div style="font-family:Syne;font-weight:700;font-size:17px;color:#e8eaf0">${fmt(s.date)}</div>
+            <div style="font-size:13px;color:#4a5568;margin-top:3px">${s.dayType==="upper"?"Upper":"Lower"} Body${s.cardio?.mins?` · Cardio ${s.cardio.mins} นาที`:""}</div>
           </div>
         </div>
-        <span id="arrow-${i}" style="color:#4a5568;font-size:12px">▼</span>
+        <span id="arrow-${i}" style="color:#4a5568;font-size:14px">▼</span>
       </div>
       <div id="detail-${i}" class="hidden">${buildDetail(s)}</div>
     </div>
@@ -379,20 +495,20 @@ function buildDetail(s){
   const ex=s.exercises||{};
   let html=`<div style="padding:0 16px 16px;border-top:1px solid #1e2530">`;
   if(s.cardio?.mins){
-    html+=`<div style="margin-top:12px;margin-bottom:8px"><div style="font-size:11px;color:#38bdf8;font-weight:500;margin-bottom:6px">🚶 CARDIO</div><div style="display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:#8090a8">`;
-    if(s.cardio.mins) html+=`<span>⏱ ${s.cardio.mins} นาที</span>`;
-    if(s.cardio.dist) html+=`<span>📏 ${s.cardio.dist} km</span>`;
+    html+=`<div style="margin-top:14px;margin-bottom:10px"><div style="font-size:13px;color:#38bdf8;font-weight:600;margin-bottom:8px">🚶 CARDIO</div><div style="display:flex;gap:16px;flex-wrap:wrap;font-size:14px;color:#8090a8">`;
+    if(s.cardio.mins)    html+=`<span>⏱ ${s.cardio.mins} นาที</span>`;
+    if(s.cardio.dist)    html+=`<span>📏 ${s.cardio.dist} km</span>`;
     if(s.cardio.incline) html+=`<span>📐 ${s.cardio.incline}%</span>`;
-    if(s.cardio.speed) html+=`<span>⚡ ${s.cardio.speed} km/h</span>`;
+    if(s.cardio.speed)   html+=`<span>⚡ ${s.cardio.speed} km/h</span>`;
     html+=`</div></div>`;
   }
   Object.entries(ex).filter(([,v])=>v?.sets?.length).forEach(([name,data])=>{
     const ic=EX.core.includes(name);
-    html+=`<div style="margin-top:10px"><div style="font-size:11px;color:${ic?"#f472b6":"#a8ff78"};font-weight:500;margin-bottom:4px">${name.toUpperCase()}</div><div style="display:flex;flex-wrap:wrap;gap:6px">`;
-    data.sets.forEach((set,j)=>{html+=`<div style="background:#0c0f14;border-radius:5px;padding:4px 10px;font-size:11px;color:#8090a8">${ic?`#${j+1} ${set.secs}s`:`#${j+1} ${set.reps}r × ${set.weight}kg`}</div>`;});
+    html+=`<div style="margin-top:12px"><div style="font-size:13px;color:${ic?"#f472b6":"#a8ff78"};font-weight:600;margin-bottom:6px">${name.toUpperCase()}</div><div style="display:flex;flex-wrap:wrap;gap:6px">`;
+    data.sets.forEach((set,j)=>{html+=`<div style="background:#0c0f14;border-radius:6px;padding:5px 12px;font-size:13px;color:#8090a8">${ic?`#${j+1} ${set.secs}s`:`#${j+1} ${set.reps}r × ${set.weight}kg`}</div>`;});
     html+=`</div></div>`;
   });
-  html+=`<button onclick="deleteSession('${s.date}')" style="margin-top:14px;background:none;border:1px solid #3a2020;color:#7a4040;border-radius:6px;padding:6px 14px;font-size:11px;width:100%">🗑 ลบวันนี้</button></div>`;
+  html+=`<button onclick="deleteSession('${s.date}')" style="margin-top:16px;background:none;border:1px solid #3a2020;color:#7a4040;border-radius:8px;padding:8px 14px;font-size:14px;width:100%">🗑 ลบวันนี้</button></div>`;
   return html;
 }
 
@@ -402,21 +518,54 @@ function deleteSession(date){
 }
 
 // ─── EXPORT / IMPORT ─────────────────────────────────────────────────────────
-function exportData(){
-  const blob=new Blob([JSON.stringify(sessions,null,2)],{type:"application/json"});
+function exportJSON(){
+  const blob=new Blob([JSON.stringify({sessions,bodyWeight},null,2)],{type:"application/json"});
   const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="workout-backup-"+today()+".json"; a.click();
 }
+
+function exportCSV(){
+  const rows=["วันที่,ประเภท,Body Weight (kg),Cardio นาที,ระยะทาง (km),ความชัน (%),ความเร็ว (km/h),ท่า,เซต,ครั้ง,น้ำหนัก (kg),เวลา Core (วินาที)"];
+  sessions.forEach(s=>{
+    const bwRec=bodyWeight.find(x=>x.date===s.date);
+    const bw=bwRec?bwRec.kg:"";
+    const ex=s.exercises||{};
+    const hasEx=Object.entries(ex).some(([,v])=>v?.sets?.length);
+    if(!hasEx){
+      rows.push(`${fmt(s.date)},${s.dayType==="upper"?"Upper":"Lower"},${bw},${s.cardio?.mins||""},${s.cardio?.dist||""},${s.cardio?.incline||""},${s.cardio?.speed||""},,,,, `);
+    } else {
+      Object.entries(ex).filter(([,v])=>v?.sets?.length).forEach(([name,data])=>{
+        const ic=EX.core.includes(name);
+        data.sets.forEach((set,j)=>{
+          rows.push(`${fmt(s.date)},${s.dayType==="upper"?"Upper":"Lower"},${bw},${s.cardio?.mins||""},${s.cardio?.dist||""},${s.cardio?.incline||""},${s.cardio?.speed||""},"${name}",${j+1},${ic?"":set.reps||""},${ic?"":set.weight||""},${ic?set.secs||"":""}`);
+        });
+      });
+    }
+  });
+  // body weight only entries
+  bodyWeight.forEach(r=>{
+    if(!sessions.find(s=>s.date===r.date)){
+      rows.push(`${fmt(r.date)},,${r.kg},,,,,,,,, `);
+    }
+  });
+  const blob=new Blob(["\uFEFF"+rows.join("\n")],{type:"text/csv;charset=utf-8"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="workout-"+today()+".csv"; a.click();
+}
+
 function importData(e){
   const file=e.target.files[0]; if(!file) return;
   const r=new FileReader();
   r.onload=ev=>{
     try{
       const data=JSON.parse(ev.target.result);
-      if(!Array.isArray(data)) throw new Error();
-      if(!confirm(`นำเข้า ${data.length} sessions?\n(จะรวมกับข้อมูลที่มีอยู่)`)) return;
-      data.forEach(s=>{const idx=sessions.findIndex(x=>x.date===s.date); if(idx>=0) sessions[idx]=s; else sessions.push(s);});
+      // support both old format (array) and new format {sessions, bodyWeight}
+      const importedSessions = Array.isArray(data) ? data : (data.sessions||[]);
+      const importedBW = Array.isArray(data) ? [] : (data.bodyWeight||[]);
+      if(!confirm(`นำเข้า ${importedSessions.length} sessions และ ${importedBW.length} body weight records?\n(จะรวมกับข้อมูลที่มีอยู่)`)) return;
+      importedSessions.forEach(s=>{const idx=sessions.findIndex(x=>x.date===s.date); if(idx>=0) sessions[idx]=s; else sessions.push(s);});
+      importedBW.forEach(r=>{const idx=bodyWeight.findIndex(x=>x.date===r.date); if(idx>=0) bodyWeight[idx]=r; else bodyWeight.push(r);});
       sessions.sort((a,b)=>a.date>b.date?-1:1);
-      persist(); renderHistory(); alert("นำเข้าสำเร็จ ✅");
+      bodyWeight.sort((a,b)=>a.date>b.date?-1:1);
+      persist(); persistBW(); renderHistory(); alert("นำเข้าสำเร็จ ✅");
     } catch{alert("ไฟล์ไม่ถูกต้อง");}
   };
   r.readAsText(file); e.target.value="";
@@ -431,6 +580,7 @@ function refreshChartSelect(){
 }
 
 function renderChart(){
+  // Exercise weight chart
   const sel=document.getElementById("ex-select").value;
   const wmap={};
   sessions.forEach(s=>{
@@ -439,30 +589,48 @@ function renderChart(){
       const w=parseFloat(set.weight); if(!isNaN(w)&&w>0){if(!wmap[key]) wmap[key]=[]; wmap[key].push(w);}
     });
   });
-  renderBar("weight-chart",Object.entries(wmap).sort((a,b)=>a[0]>b[0]?1:-1).map(([k,v])=>({label:`${MONTHS_TH[parseInt(k.split("-")[1])-1]} ${k.split("-")[0].slice(2)}`,val:avg(v)})),"#a8ff78","kg");
+  renderBar("weight-chart",toChartData(wmap),"#a8ff78","kg");
 
+  // Body weight monthly avg
+  const bwmap={};
+  bodyWeight.forEach(r=>{
+    const [y,m]=r.date.split("-"); const key=`${y}-${m}`;
+    if(!bwmap[key]) bwmap[key]=[]; bwmap[key].push(r.kg);
+  });
+  renderBar("bw-month-chart",toChartData(bwmap),"#e879f9","kg");
+
+  // Cardio chart
   const cmap={};
   sessions.forEach(s=>{
     const [y,m]=s.date.split("-"); const key=`${y}-${m}`;
     const mins=parseFloat(s.cardio?.mins); if(!isNaN(mins)&&mins>0){if(!cmap[key]) cmap[key]=[]; cmap[key].push(mins);}
   });
-  renderBar("cardio-chart",Object.entries(cmap).sort((a,b)=>a[0]>b[0]?1:-1).map(([k,v])=>({label:`${MONTHS_TH[parseInt(k.split("-")[1])-1]} ${k.split("-")[0].slice(2)}`,val:avg(v)})),"#38bdf8","นาที");
+  renderBar("cardio-chart",toChartData(cmap),"#38bdf8","นาที");
 
+  // Stats
+  const latestBW = bodyWeight.length ? bodyWeight[0].kg : "—";
   document.getElementById("stats-grid").innerHTML=[
     ["จำนวนครั้งทั้งหมด",sessions.length,"ครั้ง"],
-    ["Cardio รวม",sessions.reduce((a,s)=>a+(parseFloat(s.cardio?.mins)||0),0).toFixed(0),"นาที"],
+    ["น้ำหนักล่าสุด",latestBW,"kg"],
     ["Upper sessions",sessions.filter(s=>s.dayType==="upper").length,"ครั้ง"],
-    ["Lower sessions",sessions.filter(s=>s.dayType==="lower").length,"ครั้ง"]
-  ].map(([l,v,u])=>`<div style="background:#181c24;border-radius:8px;padding:12px 14px"><div style="font-size:10px;color:#4a5568;margin-bottom:4px">${l}</div><div style="font-family:Syne;font-weight:800;font-size:22px;color:#e8eaf0">${v} <span style="font-size:13px;color:#4a5568;font-weight:400">${u}</span></div></div>`).join("");
+    ["Lower sessions",sessions.filter(s=>s.dayType==="lower").length,"ครั้ง"],
+    ["Cardio รวม",sessions.reduce((a,s)=>a+(parseFloat(s.cardio?.mins)||0),0).toFixed(0),"นาที"],
+    ["บันทึกน้ำหนักตัว",bodyWeight.length,"ครั้ง"],
+  ].map(([l,v,u])=>`<div style="background:#181c24;border-radius:10px;padding:14px"><div style="font-size:12px;color:#4a5568;margin-bottom:4px;font-weight:500">${l}</div><div style="font-family:Syne;font-weight:800;font-size:22px;color:#e8eaf0">${v} <span style="font-size:13px;color:#4a5568;font-weight:400">${u}</span></div></div>`).join("");
+}
+
+function toChartData(map){
+  return Object.entries(map).sort((a,b)=>a[0]>b[0]?1:-1)
+    .map(([k,v])=>({label:`${MONTHS_TH[parseInt(k.split("-")[1])-1]} ${k.split("-")[0].slice(2)}`,val:avg(v)}));
 }
 
 function renderBar(id,data,color,unit){
   const c=document.getElementById(id);
-  if(!data.length){c.innerHTML=`<div style="flex:1;text-align:center;padding:30px 0;color:#3a4050;font-size:13px">ยังไม่มีข้อมูล</div>`;return;}
+  if(!data.length){c.innerHTML=`<div style="flex:1;text-align:center;padding:30px 0;color:#3a4050;font-size:14px">ยังไม่มีข้อมูล</div>`;return;}
   const max=Math.max(...data.map(d=>d.val),1);
   c.innerHTML=data.map(d=>`
-    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end">
-      <div style="font-size:10px;color:${color};font-weight:500">${d.val.toFixed(1)}</div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end">
+      <div style="font-size:10px;color:${color};font-weight:600">${d.val.toFixed(1)}</div>
       <div style="width:100%;border-radius:4px 4px 0 0;height:${(d.val/max)*110}px;background:linear-gradient(180deg,${color},${color}60);min-height:4px"></div>
       <div style="font-size:9px;color:#4a5568;text-align:center;line-height:1.2">${d.label}</div>
     </div>
